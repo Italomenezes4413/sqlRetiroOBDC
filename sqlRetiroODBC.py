@@ -1,6 +1,10 @@
 import pyodbc
 import mysql.connector as mysql
 from datetime import datetime
+import socket 
+from selenium import webdriver
+from time import sleep
+from selenium.webdriver.chrome.options import Options
 
 class ServerRetiroPbs():
     def __init__(self) -> None:
@@ -99,19 +103,33 @@ class serverGlpi():
         else:
             return False
 
-           
+
+'''
+proximas classes e funções para pegar informações da máquinas
+importante na geração de logs de usuários e/ou locais de envio de comandos
+Serão acrescentadas maiores funcionalidades na biblioteca
+
+'''
+
+class informacoesMaquinas():           
+    def __init__(self):
+        self.__teste = None
+
+
+    def getIp(self):
+        '''
+        tem que passar o getHostName primeiro para buscar alimentar a variável e depois executar a segunda.
+        '''
+        hostName = socket.gethostname()
+        ip = socket.gethostbyname(hostName)
+
+        return ip
 
 
 
-        
-        
 
 
 
-    
-        
 
 
-        
-        
-        
+
