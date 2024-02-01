@@ -114,22 +114,23 @@ Serão acrescentadas maiores funcionalidades na biblioteca
 class informacoesMaquinas():           
     def __init__(self):
         self.__teste = None
-
-
+        self.__ip = None
+    
     def getIp(self):
         '''
         tem que passar o getHostName primeiro para buscar alimentar a variável e depois executar a segunda.
         '''
         hostName = socket.gethostname()
         ip = socket.gethostbyname(hostName)
-
+        
         return ip
 
-
-
-
-
-
-
-
+    
+    def getAllInfo(self):
+        hostName = socket.gethostname()
+        ip = socket.gethostbyname(hostName)
+        data = datetime.now()
+        dataForm = data.strftime("%d%m%Y")
+        dic = {'ip': ip,'hostname': hostName,'date':dataForm}
+        return dic
 
