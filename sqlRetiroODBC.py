@@ -5,6 +5,7 @@ import socket
 from selenium import webdriver
 from time import sleep
 from selenium.webdriver.chrome.options import Options
+import icecream as ic
 
 class ServerRetiroPbs():
     def __init__(self) -> None:
@@ -14,6 +15,7 @@ class ServerRetiroPbs():
 
     #Configuração Conexão
     def setServer(self, server):
+        
         self.__server = server
 
     def setUser(self, user):
@@ -35,6 +37,7 @@ class ServerRetiroPbs():
         self.__cursor = self.__conn.cursor()
         self.__cursor.execute(self.__command)
         usuario = self.__cursor.fetchall()
+        
 
         if usuario:
             retornoBanco = usuario[0][0]
