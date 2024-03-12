@@ -137,3 +137,39 @@ class informacoesMaquinas():
         dic = {'ip': ip,'hostname': hostName,'date':dataForm}
         return dic
 
+
+class TratamentosInternos():
+    def __init__(self):
+        self.__ip = None
+    
+    def setIP(self, loja):
+        if loja <300:
+            rede = 16
+        else:
+            rede = 17
+        
+
+        if loja > 300 :
+            stringLoja = str(loja)
+            if stringLoja[1] == '0':
+                stringLoja2 = stringLoja[2]
+            else:
+                stringLoja2 = stringLoja[1:]
+        else:
+            stringLoja2=str(loja)            
+        
+        if loja == 34:
+            stringLoja2 = '25'
+        elif loja == 323:
+            stringLoja2 ='15'
+        elif loja ==34:
+            stringLoja2 = '25'
+        elif loja == 320:
+            stringLoja2 = '20'
+        else:
+            stringLoja2
+        ipFinal = f'172.{rede}.{stringLoja2}.2'
+
+        return str(ipFinal)
+
+        
