@@ -4,28 +4,16 @@ from icecream import ic
 # informacoes = sql.informacoesMaquinas()
 # informacoes = informacoes.getAllInfo()
 
- 
 
-# # Variáveis de exemplo
-# a = 5
-# b = 10
-# c = "Olá, mundo!"
+sqlServer = sql.SqlServer()
+sqlServer.setUser('USER')
+sqlServer.setPassword('PASSWORD')
+sqlServer.setDatabase('MY_DATABASE')
+sqlServer.setServer('192.168.10.15')
 
-# # Use ic() para imprimir variáveis junto com seus nomes
-# ic(a, b, c)
+command = """select top 1 from orders"""
 
-# # Você também pode usá-lo dentro de expressões
-# resultado = a + b
-# ic(resultado)
+sqlServer.setCommand(command)
+returnDataBase = sqlServer.stringPBS()
 
-# # Ou mesmo em chamadas de função
-# def multiplicar(x, y):
-#     return x * y
-
-# ic(multiplicar(a, b))
-
-
-
-teste = sql.TratamentosInternos()
-retorno = teste.setIP(320)
-print(retorno)
+print(returnDataBase) # query result

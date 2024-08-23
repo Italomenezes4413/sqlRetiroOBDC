@@ -2,10 +2,7 @@ import pyodbc
 import mysql.connector as mysql
 from datetime import datetime
 import socket 
-from selenium import webdriver
-from time import sleep
-from selenium.webdriver.chrome.options import Options
-import icecream as ic
+
 
 class SqlServer():
     def __init__(self) -> None:
@@ -59,9 +56,7 @@ class SqlServer():
         self.__connectionString = f'DRIVER={{SQL Server}};SERVER={self.__server},{self.__portNumber};DATABASE={self.__database};UID={self.__username};PWD={self.__password}'
         self.__conexao = pyodbc.connect(self.__connectionString)
         cursor = self.__conexao.cursor()
-        print('executando o comando')
         cursor.execute(self.__command)
-        print('commintando o comando')
         cursor.commit()
         
 
