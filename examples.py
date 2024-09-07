@@ -1,19 +1,18 @@
 import sqlRetiroODBC as sql
 from icecream import ic
 # get IP of de local machine
-# informacoes = sql.informacoesMaquinas()
-# informacoes = informacoes.getAllInfo()
+# info = sql.informacoesMaquinas()
+# info = informacoes.getAllInfo()
 
 
 sqlServer = sql.SqlServer()
-sqlServer.setUser('USER')
+sqlServer.setUser('USERNAME')
 sqlServer.setPassword('PASSWORD')
-sqlServer.setDatabase('MY_DATABASE')
-sqlServer.setServer('192.168.10.15')
+sqlServer.setDatabase('DATABASE')
+sqlServer.setServer('SET_YOUR_SERVER_ADRESS')
 
-command = """select top 1 from orders"""
+ic(sqlServer.ifExistTable('TESTE_CRIACAO_TABEL1A'))
 
-sqlServer.setCommand(command)
-returnDataBase = sqlServer.stringPBS()
+stringReturn =sqlServer.createTable('teste_NUMERIC','224434')
 
-print(returnDataBase) # query result
+ic(stringReturn)
