@@ -81,6 +81,7 @@ class SqlServer():
         cursor.execute(self.__command)
         cursor.commit()
 
+    
     def ifExistTable (self, nameTable:str):
         self.__connectionString = f'DRIVER={{SQL Server}};SERVER={self.__server},{self.__portNumber};DATABASE={self.__database};UID={self.__username};PWD={self.__password}'
         self.__conexao = pyodbc.connect(self.__connectionString)
@@ -107,11 +108,7 @@ class SqlServer():
             dicionario = self.__errorsSqlServer[codigoError]
             return {'message':'error', 'info': dicionario}  
             
-            
-        
-
-
-
+    
     def addColumnTable(self, nameTable:str , column:str , type:str, size):
         if size == "":
             tamanho = ""
