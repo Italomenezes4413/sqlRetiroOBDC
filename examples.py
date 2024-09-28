@@ -10,9 +10,6 @@ sqlServer.setUser('USERNAME')
 sqlServer.setPassword('PASSWORD')
 sqlServer.setDatabase('DATABASE')
 sqlServer.setServer('SET_YOUR_SERVER_ADRESS')
-
 ic(sqlServer.ifExistTable('TESTE_CRIACAO_TABEL1A'))
-
 stringReturn =sqlServer.createTable('teste_NUMERIC','224434')
-
 ic(stringReturn)
