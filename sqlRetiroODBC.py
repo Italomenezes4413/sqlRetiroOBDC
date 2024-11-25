@@ -72,6 +72,23 @@ class SqlServer():
         cursor.close()
         
         return resultado
+
+    def stringPBSDicionario(self):
+        self.__connectionString = f'DRIVER={{SQL Server}};SERVER={self.__server},{self.__portNumber};DATABASE={self.__database};UID={self.__username};PWD={self.__password}'
+        self.__conexao = pyodbc.connect(self.__connectionString)
+        cursor = self.__conexao.cursor()
+        
+        try:
+            cursor.execute(self.__command)
+            colunas = [col[0] for col in cursor.description]
+            resultado = [dict(zip(colunas, linha)) for linha in cursor.fetchall()]
+        except Exception as e:
+            cursor.close()
+            raise e
+        
+        cursor.close()
+        return resultado
+
     
     def insertPBS(self):
         print('inicio conexão banco de dados SQL Server BD_Python')
