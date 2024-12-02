@@ -29,8 +29,6 @@ class SqlServer():
             'S1000': 'General error (non-specific error, may vary between drivers)',
         }
 
-        
-
     #Configuração Conexão
     def setServer(self, server):
         
