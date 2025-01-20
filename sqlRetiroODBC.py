@@ -89,7 +89,6 @@ class SqlServer():
 
     
     def insertPBS(self):
-        print('inicio conexão banco de dados SQL Server BD_Python')
         self.__connectionString = f'DRIVER={{SQL Server}};SERVER={self.__server},{self.__portNumber};DATABASE={self.__database};UID={self.__username};PWD={self.__password}'
         self.__conexao = pyodbc.connect(self.__connectionString)
         cursor = self.__conexao.cursor()
@@ -175,7 +174,6 @@ class MysqlServer():
         cursor = conexao.cursor()
         cursor.execute(self.__command)
         retorno = cursor.fetchall()
-        print(retorno)
         if retorno:
             retornoBanco = retorno[0][0]
             return retornoBanco
@@ -189,14 +187,14 @@ importante na geração de logs de usuários e/ou locais de envio de comandos
 Serão acrescentadas maiores funcionalidades na biblioteca
 '''
 
-class informacoesMaquinas():           
+class infoMachines():           
     def __init__(self):
         self.__teste = None
         self.__ip = None
     
     def getIp(self):
         '''
-        tem que passar o getHostName primeiro para buscar alimentar a variável e depois executar a segunda.
+        You have to pass first the hostname to get the IP info, ok? Like next sample.
         '''
         hostName = socket.gethostname()
         ip = socket.gethostbyname(hostName)
