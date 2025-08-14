@@ -4,12 +4,11 @@ from icecream import ic
 # info = sql.informacoesMaquinas()
 # info = informacoes.getAllInfo()
 
+db = sql.SqlServer('192.168.0.1','PBS_RETIRO_DADOS','SA_PRECO','R3T1R0@2020')
 
-sqlServer = sql.SqlServer()
-sqlServer.setUser('USERNAME')
-sqlServer.setPassword('PASSWORD')
-sqlServer.setDatabase('DATABASE')
-sqlServer.setServer('SET_YOUR_SERVER_ADRESS')
-ic(sqlServer.ifExistTable('TESTE_CRIACAO_TABEL1A'))
-stringReturn =sqlServer.createTable('teste_NUMERIC','224434')
-ic(stringReturn)
+query = """ select nome from usuarios where usuario = 1120"""
+db.setCommand(query)
+
+resulta = db.stringPBS()
+
+print(resulta)

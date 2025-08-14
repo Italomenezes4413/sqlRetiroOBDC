@@ -6,10 +6,14 @@ from pymongo import MongoClient
 
 
 class SqlServer():
-    def __init__(self) -> None:
-        self.__connectionString = None
+    def __init__(self, server, database,user, password) -> None:
+        self._server = server
+        self._database = database
+        self._username = user
+        self._password = password        
         self.__cursor = None
         self.__portNumber = '1433'
+        self._connectionString = f'DRIVER={{SQL Server}};SERVER={self._server},{self.__portNumber};DATABASE={self._database};UID={self._username};PWD={self._password}'
         self.__errorsSqlServer = {
             '08001': 'Connection failure',
             '08004': 'Server rejected the connection',
@@ -30,27 +34,31 @@ class SqlServer():
             'S1000': 'General error (non-specific error, may vary between drivers)',
         }
 
-    #Configuração Conexão
-    def setServer(self, server):
-        
-        self.__server = server
-
-    def setUser(self, user):
-        self.__username = user
-
-    def setDatabase(self, database):
-        self.__database = database
     
-    def setPassword(self, password):
-        self.__password = password
+    #### FORMA DE PARAMETRIZAÇÃO DESCONTINUADA ########
+    # def setServer(self, server):
+        
+    #     self.__server = server
 
-    def setCommand(self, command):
-        self.__command = command 
+    # def setUser(self, user):
+    #     self.__username = user
+
+    # def setDatabase(self, database):
+    #     self.__database = database
+    
+    # def setPassword(self, password):
+    #     self.__password = password
+
+    # def setCommand(self, command):
+    #     self.__command = command 
+    #### FORMA DE PARAMETRIZAÇÃO DESCONTINUADA ########
+
+
+
 
     #Retornos conexão
     def getValidation(self):
-        self.__connectionString = f'DRIVER={{SQL Server}};SERVER={self.__server},{self.__portNumber};DATABASE={self.__database};UID={self.__username};PWD={self.__password}'
-        self.__conn = pyodbc.connect(self.__connectionString)
+        self.__conn = pyodbc.connect(self._connectionString)
         self.__cursor = self.__conn.cursor()
         self.__cursor.execute(self.__command)
         usuario = self.__cursor.fetchall()
@@ -63,8 +71,7 @@ class SqlServer():
             return False         
         
     def stringPBS(self):
-        self.__connectionString = f'DRIVER={{SQL Server}};SERVER={self.__server},{self.__portNumber};DATABASE={self.__database};UID={self.__username};PWD={self.__password}'
-        self.__conexao = pyodbc.connect(self.__connectionString)
+        self.__conexao = pyodbc.connect(self._connectionString)
         cursor = self.__conexao.cursor()
         cursor.execute(self.__command)
         resultado = cursor.fetchall()
@@ -73,8 +80,7 @@ class SqlServer():
         return resultado
 
     def stringPBSDicionario(self):
-        self.__connectionString = f'DRIVER={{SQL Server}};SERVER={self.__server},{self.__portNumber};DATABASE={self.__database};UID={self.__username};PWD={self.__password}'
-        self.__conexao = pyodbc.connect(self.__connectionString)
+        self.__conexao = pyodbc.connect(self._connectionString)
         cursor = self.__conexao.cursor()
         
         try:
@@ -90,16 +96,14 @@ class SqlServer():
 
     
     def insertPBS(self):
-        self.__connectionString = f'DRIVER={{SQL Server}};SERVER={self.__server},{self.__portNumber};DATABASE={self.__database};UID={self.__username};PWD={self.__password}'
-        self.__conexao = pyodbc.connect(self.__connectionString)
+        self.__conexao = pyodbc.connect(self._connectionString)
         cursor = self.__conexao.cursor()
         cursor.execute(self.__command)
         cursor.commit()
 
     
     def ifExistTable (self, nameTable:str):
-        self.__connectionString = f'DRIVER={{SQL Server}};SERVER={self.__server},{self.__portNumber};DATABASE={self.__database};UID={self.__username};PWD={self.__password}'
-        self.__conexao = pyodbc.connect(self.__connectionString)
+        self.__conexao = pyodbc.connect(self._connectionString)
         comand = f"select name from sys.tables where name = '{nameTable}'"
         if comand == None:
             return False
@@ -108,8 +112,7 @@ class SqlServer():
    
 
     def createTable(self, nameTable:str, primaryKey):
-        self.__connectionString = f'DRIVER={{SQL Server}};SERVER={self.__server},{self.__portNumber};DATABASE={self.__database};UID={self.__username};PWD={self.__password}'
-        self.__conexao = pyodbc.connect(self.__connectionString)
+        self.__conexao = pyodbc.connect(self._connectionString)
         cursor = self.__conexao.cursor()
         
         try:
@@ -129,8 +132,7 @@ class SqlServer():
             tamanho = ""
         else:
             tamanho = size
-        self.__connectionString = f'DRIVER={{SQL Server}};SERVER={self.__server},{self.__portNumber};DATABASE={self.__database};UID={self.__username};PWD={self.__password}'
-        self.__conexao = pyodbc.connect(self.__connectionString)
+        self.__conexao = pyodbc.connect(self._connectionString)
         cursor = self.__conexao.cursor()
         self.__command = F"""
         ALTER TABLE {nameTable} ADD COLUMN {column} {tamanho} NULL 
@@ -151,8 +153,6 @@ class SqlServer():
             }
 
 
-
-
 class MysqlServer():
 
     def __init__(self) -> None:
@@ -161,7 +161,6 @@ class MysqlServer():
         self.__server = None
         self.__database =None
         self.__command= None
-        
         
         
     def setServer(self, server):
@@ -199,7 +198,6 @@ class Mongo:
         self._collection = None
 
     
-
     def set_database(self, database):
         self._database = database
     
@@ -217,7 +215,7 @@ class Mongo:
                 'status':'sucess',
                 'message':'Conteúdo inserido com sucesso no Mongo DB'
             }
-        except Exception as e;
+        except Exception as e:
             return {
                 'status':'error',
                 'message':e
