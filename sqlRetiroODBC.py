@@ -40,7 +40,7 @@ class SqlServer():
         
     #     self.__server = server
 
-    # def setUser(self, user):
+    # def setUser(self, user):aa
     #     self.__username = user
 
     # def setDatabase(self, database):
