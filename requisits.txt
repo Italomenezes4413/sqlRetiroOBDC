@@ -3,3 +3,4 @@ selenium
 icecream
 pyodbc
 socket
+pymongo
