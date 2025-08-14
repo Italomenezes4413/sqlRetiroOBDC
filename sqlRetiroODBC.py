@@ -2,6 +2,7 @@ import pyodbc
 import mysql.connector as mysql
 from datetime import datetime
 import socket 
+from pymongo import MongoClient
 
 
 class SqlServer():
@@ -134,10 +135,20 @@ class SqlServer():
         self.__command = F"""
         ALTER TABLE {nameTable} ADD COLUMN {column} {tamanho} NULL 
                         """
-        cursor.execute(self.__command)
-        cursor.commit()
-        cursor.close()
+        try:
 
+            cursor.execute(self.__command)
+            cursor.commit()
+            cursor.close()
+            return {
+                'status':'success',
+                'message':'query was executed'
+            }
+        except Exception as e:
+            return {
+                'status':'error',
+                'message':f'{e}'
+            }
 
 
 
@@ -181,32 +192,48 @@ class MysqlServer():
             return False
 
 
-'''
-proximas classes e funções para pegar informações da máquinas
-importante na geração de logs de usuários e/ou locais de envio de comandos
-Serão acrescentadas maiores funcionalidades na biblioteca
-'''
+class Mongo:
+    def __init__(self, serverMongo:str):
+        self._client = MongoClient(serverMongo)
+        self._database = None
+        self._collection = None
 
-class infoMachines():           
-    def __init__(self):
-        self.__teste = None
-        self.__ip = None
     
-    def getIp(self):
-        '''
-        You have to pass first the hostname to get the IP info, ok? Like next sample.
-        '''
-        hostName = socket.gethostname()
-        ip = socket.gethostbyname(hostName)
+
+    def set_database(self, database):
+        self._database = database
+    
+
+    def set_collection(self, collection):
+        self._collection = collection
+
+
+    def insert_doc(self, doc):
+        db = self._client[self._database]
+        collection = db[self._collection]
+        try:
+            insert  = collection.insert_one(doc)
+            return {
+                'status':'sucess',
+                'message':'Conteúdo inserido com sucesso no Mongo DB'
+            }
+        except Exception as e;
+            return {
+                'status':'error',
+                'message':e
+            }
+
+
+    def json_search(self, params):
+        db = self._client[self._database]
+        col = db[self._collection]
+        result = col.find(params)
+        return result
+
+
+    def json_consult(self):
+        db = self._client[self._database]
+        col = db[self._collection]
+        result = col.find()
+        return result    
         
-        return ip
-
-    
-    def getAllInfo(self):
-        hostName = socket.gethostname()
-        ip = socket.gethostbyname(hostName)
-        data = datetime.now()
-        dataForm = data.strftime("%d%m%Y")
-        dic = {'ip': ip,'hostname': hostName,'date':dataForm}
-        return dic
-
