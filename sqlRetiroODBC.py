@@ -186,7 +186,7 @@ class MysqlServer():
         retorno = cursor.fetchall()
         if retorno:
             retornoBanco = retorno[0][0]
-            return retornoBanco
+            return retornoBanco 
         else:
             return False
 
