@@ -49,9 +49,9 @@ class SqlServer():
     # def setPassword(self, password):
     #     self.__password = password
 
-    # def setCommand(self, command):
-    #     self.__command = command 
-    #### FORMA DE PARAMETRIZAÇÃO DESCONTINUADA ########
+    def setCommand(self, command):
+        self.__command = command 
+    ### FORMA DE PARAMETRIZAÇÃO DESCONTINUADA ########
 
 
 
