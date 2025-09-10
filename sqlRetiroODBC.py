@@ -101,6 +101,17 @@ class SqlServer():
         cursor.execute(self.__command)
         cursor.commit()
 
+
+    def insertPBSReturn(self):
+        self.__conexao = pyodbc.connect(self._connectionString)
+        cursor = self.__conexao.cursor()
+        cursor.execute(self.__command)
+        row = cursor.fetchone()
+        cursor.commit() 
+        if row:
+            return str(row[0])
+        return None
+
     
     def ifExistTable (self, nameTable:str):
         self.__conexao = pyodbc.connect(self._connectionString)
