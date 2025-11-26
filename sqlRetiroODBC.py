@@ -5,34 +5,39 @@ import socket
 from pymongo import MongoClient
 import platform
 
-class SqlServer:
-    def __init__(self, server, database, user, password) -> None:
+class SqlServer():
+    def __init__(self, server, database,user, password) -> None:
         self._server = server
         self._database = database
         self._username = user
         self._password = password        
         self.__cursor = None
-        self.__portNumber = '1433'
+        self._portNumber = '1433'
+        # self._connectionString = f'DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={self._server},{self.__portNumber};DATABASE={self._database};UID={self._username};PWD={self._password}'
+        # Descobre o SO
+        sistema = platform.system().lower()
 
-        # Detecta sistema operacional
-        self.__system = platform.system().lower()
-
-        # Define o driver conforme o sistema operacional
-        if 'windows' in self.__system:
-            # Driver comum no Windows
-            driver = '{SQL Server}'
+        if sistema == 'windows':
+            driver = "SQL Server"
+            self._connectionString = (
+                f"DRIVER={{{driver}}};"
+                f"SERVER={self._server},{self._portNumber};"
+                f"DATABASE={self._database};"
+                f"UID={self._username};"
+                f"PWD={self._password};"
+            )
         else:
-            # Driver padrão no Linux (precisa estar instalado via msodbcsql17/msodbcsql18)
-            driver = '{ODBC Driver 17 for SQL Server}'
-
-        # Monta a connection string
-        self._connectionString = (
-            f'DRIVER={driver};'
-            f'SERVER={self._server},{self.__portNumber};'
-            f'DATABASE={self._database};'
-            f'UID={self._username};'
-            f'PWD={self._password}'
-        )
+            # Linux (ou outros)
+            driver = "ODBC Driver 18 for SQL Server"
+            self._connectionString = (
+                f"DRIVER={{{driver}}};"
+                f"SERVER={self._server},{self._portNumber};"
+                f"DATABASE={self._database};"
+                f"UID={self._username};"
+                f"PWD={self._password};"
+                "Encrypt=no;"
+                "TrustServerCertificate=yes;"
+            )
 
         # Dicionário de erros conhecidos
         self.__errorsSqlServer = {
