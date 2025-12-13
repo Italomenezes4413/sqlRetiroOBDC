@@ -2,5 +2,4 @@ mysql.connector
 selenium
 icecream
 pyodbc
-socket
 pymongo
