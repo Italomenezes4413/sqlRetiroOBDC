@@ -80,35 +80,66 @@ class SqlServer():
 
 
 
-    #Retornos conexão
-    def getValidation(self):
-        self.__conn = pyodbc.connect(self._connectionString)
-        self.__cursor = self.__conn.cursor()
-        self.__cursor.execute(self.__command)
-        usuario = self.__cursor.fetchall()
-        self.__cursor.close()
 
-        if usuario:
-            retornoBanco = usuario[0][0]
-            return retornoBanco
-        else:
-            return False         
+    # #Retornos conexão
+    # def getValidation(self):
+    #     '''
+    # descontinuado durante o desenvolvimento para ajustar concorrencia das funções
+    # '''
+    #     self.__conn = pyodbc.connect(self._connectionString)
+    #     self.__cursor = self.__conn.cursor()
+    #     self.__cursor.execute(self.__command)
+    #     usuario = self.__cursor.fetchall()
+    #     self.__cursor.close()
+
+    #     if usuario:
+    #         retornoBanco = usuario[0][0]
+    #         return retornoBanco
+    #     else:
+    #         return False         
         
-    def stringPBS(self):
-        self.__conexao = pyodbc.connect(self._connectionString)
-        cursor = self.__conexao.cursor()
-        cursor.execute(self.__command)
-        resultado = cursor.fetchall()
-        cursor.close()
-        
-        return resultado
-    
-    def stringPBS(self):
-        command = self.__command
+
+    def getValidation(self):
+        comand = self.__command
         conn = pyodbc.connect(self._connectionString)
         try:
             cursor = conn.cursor()
-            cursor.execute(command)    
+            cursor.execute(comand)
+            usuario = cursor.fetchall()
+            if usuario:
+                retornoBanco = usuario[0][0]
+                return retornoBanco
+            else:
+                return False
+        finally:
+            cursor.close()
+            conn.close()
+
+
+
+        
+    # def stringPBS(self):
+    '''
+    descontinuado durante o desenvolvimento para ajustar concorrencia das funções
+    '''
+    #     self.__conexao = pyodbc.connect(self._connectionString)
+    #     cursor = self.__conexao.cursor()
+    #     cursor.execute(self.__command)
+    #     resultado = cursor.fetchall()
+    #     cursor.close()
+        
+    #     return resultado
+
+
+    def stringPBS(self):
+        ''' analisr o que ainda vai mudar dentro dessa função. '''
+        command = self.__command
+        conn = pyodbc.connect(self._connectionString)
+        # self.__conexao = pyodbc.connect(self._connectionString)
+        try: 
+
+            cursor = conn.cursor()
+            cursor.execute(command)
             resultado = cursor.fetchall()
             return resultado
         finally:
@@ -116,39 +147,101 @@ class SqlServer():
             conn.close()
 
 
-    def stringPBSDicionario(self):
-        self.__conexao = pyodbc.connect(self._connectionString)
-        cursor = self.__conexao.cursor()
+
+    # def stringPBSDicionario(self):
+    '''
+    descontinuado durante o desenvolvimento para ajustar concorrencia das funções
+    '''
+    #     self.__conexao = pyodbc.connect(self._connectionString)
+    #     cursor = self.__conexao.cursor()
         
+    #     try:
+    #         cursor.execute(self.__command)
+    #         colunas = [col[0] for col in cursor.description]
+    #         resultado = [dict(zip(colunas, linha)) for linha in cursor.fetchall()]
+    #     except Exception as e:
+    #         cursor.close()
+    #         raise e
+        
+    #     cursor.close()
+    #     return resultado
+    
+
+    def stringPBSDicionario(self):
+ 
+        command = self.__command
+        conn = pyodbc.connect(self._connectionString)
         try:
-            cursor.execute(self.__command)
+            cursor = conn.cursor()
+            cursor.execute(command)
             colunas = [col[0] for col in cursor.description]
             resultado = [dict(zip(colunas, linha)) for linha in cursor.fetchall()]
+            return resultado
         except Exception as e:
-            cursor.close()
             raise e
-        
-        cursor.close()
-        return resultado
+        finally:
+            cursor.close()
+            conn.close()
 
     
-    def insertPBS(self):
-        self.__conexao = pyodbc.connect(self._connectionString)
-        cursor = self.__conexao.cursor()
-        cursor.execute(self.__command)
-        cursor.commit()
+    # def insertPBS(self):
+    '''
+    descontinuado durante o desenvolvimento para ajustar concorrencia das funções
+    '''
+    
+    #     self.__conexao = pyodbc.connect(self._connectionString)
+    #     cursor = self.__conexao.cursor()
+    #     cursor.execute(self.__command)
+    #     cursor.commit()
 
+
+
+    def insertPBS(self):
+        command = self.__command
+        conn = pyodbc.connect(self._connectionString)
+        try:
+            cursor = conn.cursor()
+            cursor.execute(command)
+            cursor.commit()
+        finally:
+            cursor.close()
+            conn.close()
+
+
+
+    # def insertPBSReturn(self):
+    '''
+    descontinuado durante o desenvolvimento para ajustar concorrencia das funções
+    '''
+    #     self.__conexao = pyodbc.connect(self._connectionString)
+    #     cursor = self.__conexao.cursor()
+    #     cursor.execute(self.__command)
+    #     row = cursor.fetchone()
+    #     cursor.commit() 
+    #     if row:
+    #         return str(row[0])
+    #     return None
+    
 
     def insertPBSReturn(self):
-        self.__conexao = pyodbc.connect(self._connectionString)
-        cursor = self.__conexao.cursor()
-        cursor.execute(self.__command)
-        row = cursor.fetchone()
-        cursor.commit() 
-        if row:
-            return str(row[0])
-        return None
+        command = self.__command
+        conn = pyodbc.connect(self._connectionString)
+        try:
+            cursor = conn.cursor()
+            cursor.execute(command)
+            row = cursor.fetchone()
+            cursor.commit()
+            if row:
+                return str(row[0])
+            else:
+                return None
+        except Exception as e:
+            print(e)
+            return None
 
+        finally:
+            cursor.close()
+            conn.close()
     
     def ifExistTable (self, nameTable:str):
         self.__conexao = pyodbc.connect(self._connectionString)
