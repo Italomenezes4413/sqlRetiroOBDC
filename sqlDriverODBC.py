@@ -102,6 +102,19 @@ class SqlServer():
         cursor.close()
         
         return resultado
+    
+    def stringPBS(self):
+        command = self.__command
+        conn = pyodbc.connect(self._connectionString)
+        try:
+            cursor = conn.cursor()
+            cursor.execute(command)    
+            resultado = cursor.fetchall()
+            return resultado
+        finally:
+            cursor.close()
+            conn.close()
+
 
     def stringPBSDicionario(self):
         self.__conexao = pyodbc.connect(self._connectionString)
